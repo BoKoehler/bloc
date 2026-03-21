@@ -1,2 +1,2 @@
-# SESSIONS
-Clean app to track gym progress, simply and easily.
+# BLOC
+Clean app to track gym progress.
