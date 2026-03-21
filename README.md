@@ -1,2 +1,2 @@
-# sessions
-gym app for me.
+# SESSIONS
+Clean app to track gym progress, simply and easily.
