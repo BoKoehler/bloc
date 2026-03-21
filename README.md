@@ -2,21 +2,15 @@
 
 <br/>
 
-```
-██████╗ ██╗      ██████╗  ██████╗
-██╔══██╗██║     ██╔═══██╗██╔════╝
-██████╔╝██║     ██║   ██║██║
-██╔══██╗██║     ██║   ██║██║
-██████╔╝███████╗╚██████╔╝╚██████╗
-╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝
-```
+# BLOC
 
-**Personal training log. Built for me. Shared because it's good.**
+**Personal training log. Built for me.**
 
-[![Live App](https://img.shields.io/badge/live-app-e8533a?style=flat-square)](https://yourusername.github.io/bloc)
-![No dependencies](https://img.shields.io/badge/dependencies-0-161618?style=flat-square)
-![Vanilla](https://img.shields.io/badge/framework-none-161618?style=flat-square)
-![PWA](https://img.shields.io/badge/PWA-yes-e8533a?style=flat-square)
+[![Live App](https://img.shields.io/badge/open%20app-e8533a?style=for-the-badge)](https://yourusername.github.io/bloc)
+&nbsp;
+![No Dependencies](https://img.shields.io/badge/dependencies-zero-161618?style=for-the-badge)
+&nbsp;
+![PWA](https://img.shields.io/badge/installs%20as%20PWA-yes-e8533a?style=for-the-badge)
 
 <br/>
 
@@ -24,206 +18,194 @@
 
 ---
 
-I train six days a week. Every app I tried was either bloated with features I didn't need, wanted a subscription, or just didn't work the way I think about training. So I built my own.
+I train six days a week and every existing app I tried was either bloated, behind a paywall, or just built for someone who goes to the gym twice a week and needs motivation notifications. None of them worked the way I think about training.
 
-BLOC is a progressive web app — five files, zero dependencies, installs to your iPhone home screen and runs exactly like a native app. Your data never leaves your device. There's no backend, no account, no analytics. Just your training log.
+So I built my own.
 
-<br/>
-
-## Overview
-
-```
-Log sessions  →  Active workout mode  →  PR book builds itself
-     ↓                   ↓                        ↓
-Templates         Rest timer + history       1RM estimates
-     ↓                   ↓                        ↓
-     └──────── Body weight tracker ───────────────┘
-                         ↓
-                  Export backup anytime
-```
+BLOC is a progressive web app. Five files, zero dependencies. Install it to your iPhone home screen and it runs fullscreen like a native app. Your data never leaves your device. No backend, no account, no subscription. Just your training log.
 
 <br/>
 
-## What's in it
+## What's In It
 
 <details>
-<summary><strong>Session Logging</strong></summary>
+<summary><b>Session Logging</b></summary>
 <br/>
 
-Name your session, date it, add exercises. Simple.
+Name your session, date it, add exercises. Pretty straightforward.
 
-The thing most apps get wrong is set logging. Most force you to pick one rep count for every set — but that's not how it works when you're actually training. BLOC gives you two modes per exercise:
+The part most apps mess up is set logging. They make you pick one rep count for every set but that's not how training actually works. BLOC gives you two modes per exercise:
 
-**Uniform** — same weight and reps across every set. Three fields, done in seconds.
+**Uniform** — same weight and reps across every set. Three fields and you're done.
 
-**Per Set** — individual row per set with its own reps, weight, and rest time. For when you hit 8 on your first two sets and 6 on the third. That difference matters and it should be logged accurately.
+**Per Set** — individual row for each set with its own reps, weight, and rest time. For when you get 8 on your first two sets and drop to 6 on the third. That difference matters and it should be logged accurately.
 
-Per-exercise notes for anything you want to remember — grip cues, variations, why something felt off.
+Per-exercise notes too, for anything worth remembering like grip cues, variations, or why something felt off.
 
 </details>
 
 <details>
-<summary><strong>Active Workout Mode</strong></summary>
+<summary><b>Active Workout Mode</b></summary>
 <br/>
 
-This is where the app actually earns its keep. After saving a session, you can launch it in Active Mode — a full-screen UI designed for use while you're standing in the gym.
+This is the most important part. After saving a session you can launch it in Active Mode, which is a full-screen UI built for actually being at the gym and using it in real time.
 
-- Large inputs built for thumbs
-- Tap ✓ on each set to mark it done — it goes green
-- Rest timer starts automatically when you complete a set
+- Large inputs that work with your thumbs
+- Tap the checkmark on each set to mark it done and it goes green
+- Rest timer kicks off automatically when you complete a set
 - Elapsed session clock in the header
-- Any weight or rep changes you make mid-session save back to your log
+- Any weight or rep changes you make mid-session save back to your log automatically
 
-The difference between a logging app and a training tool is this mode.
-
-</details>
-
-<details>
-<summary><strong>Rest Timer</strong></summary>
-<br/>
-
-Set rest periods when you log — either one value for the whole exercise (Uniform mode) or per set (Per Set mode). When you tap a set done in Active Mode, the countdown starts.
-
-Blue banner with a live countdown and a skip button. Pulses green when the rest is up. Quick-select chips for 60 / 90 / 120 / 180 seconds so you're not typing every time.
+The difference between a logging app and a real training tool is this mode.
 
 </details>
 
 <details>
-<summary><strong>Templates</strong></summary>
+<summary><b>Rest Timer</b></summary>
 <br/>
 
-Save any session structure as a template. If you're running the same split week over week — Push, Pull, Lower, Upper, whatever — you shouldn't be re-entering your exercise list every time.
+Set rest times when you log your session. Either one value for the whole exercise in Uniform mode, or per set in Per Set mode. When you tap a set done in Active Mode the countdown starts on its own.
 
-Tap **Use** on a template and the session pre-fills with your exercises, sets, and rest periods. Weights are blank — you fill those in fresh each session. The structure is saved, the numbers aren't.
+Blue banner with a live countdown and a skip button. Turns green when the rest is up. Quick-tap buttons for 60 / 90 / 120 / 180 seconds so you're not typing it every time.
 
 </details>
 
 <details>
-<summary><strong>Exercise History</strong></summary>
+<summary><b>Templates</b></summary>
 <br/>
 
-When logging a new session and you start typing an exercise name, a dropdown shows your last 5 logged sessions of that lift — date, sets breakdown, and total volume. You can see what you did last week before deciding what to put on the bar today.
+Save any session structure as a template. If you run the same split week over week you shouldn't be re-entering your exercise list every single time.
 
-No separate history page to navigate to. It's inline, right where you need it.
+Tap Use on a template and the session pre-fills with your exercises, sets, and rest periods. Weights stay blank so you fill those in fresh each session. The structure is saved, the numbers aren't.
 
 </details>
 
 <details>
-<summary><strong>PR Book</strong></summary>
+<summary><b>Exercise History</b></summary>
 <br/>
 
-Builds itself from your session history. Every exercise you've ever logged, sorted by movement category — Push / Pull / Legs / Core / Other. Shows your heaviest logged weight next to an estimated 1RM.
+When you're logging a new session and start typing an exercise name, a dropdown shows your last five logged sessions of that lift. Date, sets breakdown, and total volume. You can see exactly what you did last week before you decide what to put on the bar.
 
-Updates every time you log a new session. Nothing to maintain.
+It's inline right where you need it, no separate page to navigate to.
 
 </details>
 
 <details>
-<summary><strong>1RM Estimates</strong></summary>
+<summary><b>PR Book</b></summary>
 <br/>
 
-Estimated 1-rep max calculated automatically via the Epley formula wherever weight and reps are logged:
+Builds itself from your session history. Every exercise you've ever logged sorted into Push / Pull / Legs / Core / Other. Shows your heaviest logged weight and an estimated 1RM next to it.
+
+Updates every time you log. Nothing to maintain manually.
+
+</details>
+
+<details>
+<summary><b>1RM Estimates</b></summary>
+<br/>
+
+Estimated one-rep max calculated automatically using the Epley formula anywhere you've logged weight and reps:
 
 ```
-estimated 1RM = weight × (1 + reps / 30)
+estimated 1RM = weight x (1 + reps / 30)
 ```
 
-Shows in the PR Book, session detail view, and Active Mode per exercise. Not gospel, but a useful reference point for tracking strength over time without always going to failure.
+Shows in the PR Book, session detail view, and Active Mode. Not an exact number but a solid reference point for tracking strength over time without going to failure every session.
 
 </details>
 
 <details>
-<summary><strong>Body Weight Tracker</strong></summary>
+<summary><b>Body Weight Tracker</b></summary>
 <br/>
 
-Log weight with a date. See:
+Log your weight with a date. You get:
 
 - Current weight
-- Total change from your first entry (green if down, red if up)
+- Total change from your first entry, color coded green or red
 - 7-day rolling average
-- Full history with delta between each entry
+- Full history with the delta between each entry
 
-The 7-day average is the one that actually matters — it smooths out day-to-day noise from water, food timing, sleep.
+The 7-day average is the number that actually matters. It smooths out the noise from water weight, food timing, and sleep so you can actually see what's happening.
 
 </details>
 
 <details>
-<summary><strong>Data Backup</strong></summary>
+<summary><b>Data Backup</b></summary>
 <br/>
 
-Settings → Export Backup → saves a JSON file of everything: sessions, body weight history, templates.
+Settings then Export Backup saves a JSON file with everything in it. All sessions, body weight history, and templates.
 
-Import it back anytime to restore. Useful when switching phones or if you ever need to recover. The file is small. The whole process takes about five seconds. Do it once a month.
+Import it back anytime to restore. Good for switching phones or just keeping a copy somewhere safe. The file is tiny and the whole thing takes about five seconds. Do it once a month.
 
 </details>
 
 <br/>
 
-## Install
+## Installing to Your Phone
 
-BLOC runs as a PWA — installs to your iPhone home screen, runs fullscreen, gets its own storage that won't get wiped when you clear your browser cache.
+BLOC is a PWA so it installs directly to your iPhone home screen and runs fullscreen like a native app. It also gets its own isolated storage that won't get cleared when you wipe your browser cache.
 
-**Has to be Safari. Chrome on iOS won't do it.**
+**Has to be Safari. Chrome on iOS doesn't support this.**
 
-1. Open your GitHub Pages URL in **Safari**
-2. Tap the share button at the bottom of the screen
-3. **Add to Home Screen**
-4. **Add**
+```
+1. Open your GitHub Pages URL in Safari
+2. Tap the Share button at the bottom of the screen
+3. Add to Home Screen
+4. Add
+```
 
-Open it from your home screen from that point on — not from the browser. The installed version has isolated storage.
+Open it from your home screen from that point on, not from the browser. The installed version has its own separate storage.
 
 <br/>
 
-## Deploy
+## Deploy It
 
-Five files. Two minutes.
+Five files. About two minutes.
 
 ```
 bloc/
-├── index.html        ← the whole app
-├── manifest.json     ← PWA config
-├── sw.js             ← service worker for offline
-├── icon-192.png      ← home screen icon
-└── icon-512.png      ← home screen icon (large)
+  index.html      the whole app
+  manifest.json   PWA config
+  sw.js           service worker for offline support
+  icon-192.png    home screen icon
+  icon-512.png    home screen icon, larger
 ```
 
-**Steps:**
-
 ```
-1. GitHub → New repository (Public)
-2. Upload all 5 files
-3. Settings → Pages → Deploy from branch → main / root → Save
-4. Wait ~60 seconds → your URL is ready
-5. Open in Safari on iPhone → Add to Home Screen
+1. GitHub -> New repository, set it to Public
+2. Upload all five files
+3. Settings -> Pages -> Deploy from branch -> main / root -> Save
+4. Wait about 60 seconds and your URL is live
+5. Open it in Safari on your iPhone and add to home screen
 ```
 
-> Updating later: replace `index.html` in the repo. The PWA updates automatically on next open. Your data is untouched.
+To update later just replace `index.html` in the repo. The PWA picks up changes automatically on the next open and your data stays untouched.
 
 <br/>
 
-## Backup & Restore
+## Backup and Restore
 
 ```
-Backup  →  ⚙ Settings  →  Export Backup  →  save the .json somewhere
-Restore →  ⚙ Settings  →  Import Backup  →  select the file  →  confirm
+Backup   ->  gear icon (top right)  ->  Export Backup  ->  save the .json file somewhere
+Restore  ->  gear icon (top right)  ->  Import Backup  ->  select the file  ->  confirm
 ```
 
-Do this monthly. It takes five seconds and covers you if you ever clear your browser storage, factory reset your phone, or switch devices.
+Do this monthly. It takes five seconds and covers you if you factory reset your phone, switch devices, or accidentally clear your browser storage.
 
 <br/>
 
-## Reference
+## Quick Reference
 
-| What you want to do | How |
+| What you want | How to do it |
 |---|---|
-| Log a new session | **Log New Session** button on the Log tab |
-| Start Active Mode | Save a session → tap Yes on the prompt |
-| Mark a set complete | Tap **✓** in Active Mode |
-| Skip the rest timer | Tap **Skip** on the blue banner |
-| Load a saved workout | Log tab → Templates → **Use** |
-| See past history for a lift | Start typing the exercise name while logging |
-| View all PRs | **PRs** tab in the bottom nav |
-| Back up everything | ⚙ Settings → **Export Backup** |
+| Log a new session | Log New Session button on the Log tab |
+| Launch Active Mode | Save a session, then tap Yes on the prompt |
+| Mark a set complete | Tap the checkmark circle in Active Mode |
+| Skip the rest timer | Tap Skip on the blue timer banner |
+| Load a saved workout | Log tab -> Templates -> Use |
+| See history for a lift | Start typing the exercise name while logging |
+| View all PRs | PRs tab in the bottom nav |
+| Back up your data | Gear icon -> Export Backup |
 
 <br/>
 
@@ -231,22 +213,22 @@ Do this monthly. It takes five seconds and covers you if you ever clear your bro
 
 | | |
 |---|---|
-| Frontend | Vanilla HTML / CSS / JS — no framework |
-| Storage | `localStorage` |
+| Frontend | Vanilla HTML, CSS, JS. No framework. |
+| Storage | localStorage |
 | Fonts | Barlow Condensed, Barlow, JetBrains Mono |
 | PWA | Web App Manifest + Service Worker |
 | Hosting | GitHub Pages |
 | Cost | $0 |
 
-The whole app is `index.html`. Everything else is PWA infrastructure.
+The entire app is `index.html`. Everything else is just the PWA wrapper.
 
 <br/>
 
-## Data & Privacy
+## Data and Privacy
 
-Everything lives in your browser's `localStorage`. Nothing is sent anywhere. No server. No account. No tracking.
+Everything is stored in your browser's `localStorage`. Nothing is sent anywhere. No server, no account, no tracking of any kind.
 
-The only external call is Google Fonts on first load — cached by the service worker after that, so it works fully offline.
+The only external request is Google Fonts on first load. The service worker caches those so the app works fully offline after that.
 
 <br/>
 
