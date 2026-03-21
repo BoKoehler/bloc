@@ -1,1 +1,1930 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>FORM</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
+      :root {
+        --bg: #111113;
+        --bg1: #18181b;
+        --bg2: #1f1f23;
+        --bg3: #272729;
+        --bg4: #2e2e32;
+        --line: #28282c;
+        --line2: #333338;
+        --text: #f0ede8;
+        --text2: #9a9793;
+        --text3: #524f4b;
+        --gold: #c9a96e;
+        --gold-light: #e2c898;
+        --gold-dim: #1e1912;
+        --gold-mid: #2e2515;
+        --red: #c0573a;
+        --red-dim: #1e1210;
+        --radius: 16px;
+        --radius-sm: 10px;
+        --radius-xs: 7px;
+        --trans: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      html {
+        -webkit-tap-highlight-color: transparent;
+        scroll-behavior: smooth;
+      }
+
+      /* GRAIN OVERLAY */
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overscroll-behavior: none;
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.022;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+
+      /* Everything sits above grain */
+      header,
+      main,
+      nav,
+      .sheet-overlay {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ─── HEADER ──────────────────────────────────────────────────────── */
+      header {
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+
+      /* Subtle gold line under header */
+      header::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          var(--gold) 40%,
+          var(--gold) 60%,
+          transparent 100%
+        );
+        opacity: 0.18;
+      }
+
+      .logo {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 600;
+        font-size: 1.45rem;
+        letter-spacing: 0.22em;
+        color: var(--text);
+        text-transform: uppercase;
+      }
+
+      .logo-dot {
+        color: var(--gold);
+        font-style: italic;
+        font-weight: 300;
+      }
+
+      .header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 1px;
+      }
+
+      .header-date {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.58rem;
+        font-weight: 300;
+        color: var(--text3);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      /* ─── BOTTOM NAV ──────────────────────────────────────────────────── */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(24, 24, 27, 0.92);
+        backdrop-filter: blur(20px) saturate(1.2);
+        -webkit-backdrop-filter: blur(20px) saturate(1.2);
+        border-top: 1px solid var(--line);
+        display: flex;
+        padding-bottom: env(safe-area-inset-bottom);
+        z-index: 50;
+      }
+
+      .bnav-btn {
+        flex: 1;
+        background: none;
+        border: none;
+        color: var(--text3);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.58rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 11px 8px 12px;
+        cursor: pointer;
+        transition: var(--trans);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .bnav-icon {
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .bnav-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: var(--trans);
+      }
+
+      .bnav-btn.on {
+        color: var(--gold);
+      }
+
+      .bnav-btn.on .bnav-icon::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      /* ─── MAIN ────────────────────────────────────────────────────────── */
+      main {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 26px 18px 0;
+      }
+
+      .page {
+        display: none;
+      }
+      .page.on {
+        display: block;
+        animation: pageIn 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      @keyframes pageIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ─── PAGE HEADER ─────────────────────────────────────────────────── */
+      .pg-top {
+        margin-bottom: 24px;
+      }
+
+      .pg-kicker {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.58rem;
+        font-weight: 300;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+        opacity: 0.7;
+      }
+
+      .pg-h {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        font-size: 2.8rem;
+        letter-spacing: 0.02em;
+        line-height: 0.95;
+        color: var(--text);
+      }
+
+      .pg-h em {
+        font-style: italic;
+        font-weight: 300;
+        color: var(--text2);
+      }
+
+      /* ─── PRIMARY BUTTON ──────────────────────────────────────────────── */
+      .action-btn {
+        width: 100%;
+        background: linear-gradient(
+          135deg,
+          var(--gold) 0%,
+          var(--gold-light) 50%,
+          var(--gold) 100%
+        );
+        background-size: 200% 200%;
+        color: #0e0c09;
+        border: none;
+        border-radius: var(--radius);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 16px 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+        transition: var(--trans);
+        box-shadow:
+          0 4px 24px rgba(201, 169, 110, 0.18),
+          0 1px 4px rgba(0, 0, 0, 0.4);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .action-btn:active {
+        transform: scale(0.98);
+        box-shadow: 0 2px 12px rgba(201, 169, 110, 0.12);
+      }
+
+      .action-btn-ico {
+        width: 28px;
+        height: 28px;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+
+      /* ─── ACCORDION ───────────────────────────────────────────────────── */
+      .accordion {
+        margin-bottom: 8px;
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--bg1);
+        transition: var(--trans);
+      }
+
+      .acc-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 18px;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.15s;
+      }
+      .acc-head:active {
+        background: var(--bg2);
+      }
+
+      .accordion.open .acc-head {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .acc-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .acc-cat-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .acc-label {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--text);
+      }
+
+      .acc-badge {
+        background: var(--bg3);
+        color: var(--text3);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 400;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+
+      .acc-arrow {
+        color: var(--text3);
+        font-size: 0.65rem;
+        transition: transform 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .accordion.open .acc-arrow {
+        transform: rotate(180deg);
+      }
+
+      .acc-body {
+        display: none;
+        background: var(--bg1);
+      }
+      .accordion.open .acc-body {
+        display: block;
+      }
+
+      /* ─── SESSION ROWS ────────────────────────────────────────────────── */
+      .wk-row {
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--line);
+        transition: background 0.12s;
+      }
+      .wk-row:last-child {
+        border-bottom: none;
+      }
+      .wk-row:active {
+        background: var(--bg2);
+      }
+
+      .wk-date-pill {
+        background: var(--bg3);
+        border: 1px solid var(--line2);
+        border-radius: 10px;
+        padding: 7px 10px;
+        text-align: center;
+        flex-shrink: 0;
+        min-width: 44px;
+      }
+      .wk-date-day {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 1;
+        color: var(--text);
+      }
+      .wk-date-mon {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.5rem;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text3);
+        margin-top: 2px;
+      }
+
+      .wk-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .wk-name {
+        font-size: 0.88rem;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 3px;
+        color: var(--text);
+      }
+      .wk-meta {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 300;
+        color: var(--text3);
+      }
+
+      .wk-chev {
+        color: var(--text3);
+        font-size: 0.8rem;
+        opacity: 0.5;
+      }
+
+      .empty {
+        padding: 40px 18px;
+        text-align: center;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 1rem;
+        color: var(--text3);
+      }
+
+      /* ─── PR ROWS ─────────────────────────────────────────────────────── */
+      .pr-row {
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+      .pr-row:last-child {
+        border-bottom: none;
+      }
+
+      .pr-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        opacity: 0.7;
+      }
+      .cat-push {
+        background: #d4845a;
+      }
+      .cat-pull {
+        background: #7a9fd4;
+      }
+      .cat-legs {
+        background: #9bcf8a;
+      }
+      .cat-core {
+        background: #d47a7a;
+      }
+      .cat-other {
+        background: var(--text3);
+      }
+
+      .pr-name {
+        font-size: 0.82rem;
+        font-weight: 400;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--text2);
+      }
+      .pr-val {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.76rem;
+        font-weight: 300;
+        color: var(--gold);
+        white-space: nowrap;
+      }
+
+      /* ─── BODY WEIGHT ─────────────────────────────────────────────────── */
+      .bw-add-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-end;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+      }
+      .bw-add-row .f {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      .bw-row {
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+      .bw-row:last-child {
+        border-bottom: none;
+      }
+
+      .bw-date {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.64rem;
+        font-weight: 300;
+        color: var(--text3);
+        min-width: 72px;
+      }
+      .bw-w {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.15rem;
+        font-weight: 400;
+        flex: 1;
+        color: var(--text);
+      }
+      .bw-unit {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6rem;
+        color: var(--text3);
+        margin-left: 3px;
+      }
+      .bw-delta {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.64rem;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-weight: 300;
+      }
+      .delta-up {
+        background: var(--red-dim);
+        color: var(--red);
+      }
+      .delta-dn {
+        background: var(--gold-dim);
+        color: var(--gold);
+      }
+      .delta-eq {
+        color: var(--text3);
+      }
+
+      /* ─── FORM FIELDS ─────────────────────────────────────────────────── */
+      .f {
+        margin-bottom: 14px;
+      }
+      .f label {
+        display: block;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.56rem;
+        font-weight: 300;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text3);
+        margin-bottom: 7px;
+      }
+      .f input,
+      .f select,
+      .f textarea {
+        width: 100%;
+        background: var(--bg2);
+        border: 1px solid var(--line2);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 400;
+        padding: 11px 14px;
+        outline: none;
+        transition:
+          border-color 0.18s,
+          box-shadow 0.18s;
+        -webkit-appearance: none;
+      }
+      .f input:focus,
+      .f select:focus,
+      .f textarea:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.08);
+      }
+      .f input::placeholder {
+        color: var(--text3);
+        font-weight: 300;
+      }
+      .f textarea {
+        resize: vertical;
+        min-height: 64px;
+        line-height: 1.55;
+        font-size: 0.84rem;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .three-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+      }
+
+      /* ─── SHEET ───────────────────────────────────────────────────────── */
+      .sheet-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .sheet-overlay.on {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .sheet {
+        background: var(--bg1);
+        width: 100%;
+        max-width: 480px;
+        max-height: 93dvh;
+        overflow-y: auto;
+        border-radius: 24px 24px 0 0;
+        border: 1px solid var(--line2);
+        border-bottom: none;
+        padding: 0 0 calc(32px + env(safe-area-inset-bottom));
+        animation: sheetUp 0.26s cubic-bezier(0.32, 1.1, 0.36, 1);
+      }
+
+      /* Gold accent line on sheet top */
+      .sheet::before {
+        content: "";
+        display: block;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        opacity: 0.3;
+      }
+
+      @keyframes sheetUp {
+        from {
+          transform: translateY(80px);
+          opacity: 0;
+        }
+        to {
+          transform: none;
+          opacity: 1;
+        }
+      }
+
+      .sheet-handle {
+        width: 32px;
+        height: 3px;
+        background: var(--line2);
+        border-radius: 2px;
+        margin: 16px auto 22px;
+      }
+
+      .sheet-title {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        font-size: 1.7rem;
+        letter-spacing: 0.04em;
+        padding: 0 22px 18px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 20px;
+        color: var(--text);
+      }
+
+      .sheet-body {
+        padding: 0 22px;
+      }
+
+      /* ─── EXERCISE BLOCK ──────────────────────────────────────────────── */
+      .ex-block {
+        background: var(--bg2);
+        border: 1px solid var(--line2);
+        border-radius: var(--radius);
+        margin-bottom: 10px;
+        overflow: hidden;
+        transition: var(--trans);
+      }
+
+      .ex-head {
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .ex-idx {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.95rem;
+        font-style: italic;
+        color: var(--gold);
+        opacity: 0.6;
+        width: 16px;
+        flex-shrink: 0;
+      }
+
+      .ex-name-inp {
+        flex: 1;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid var(--line2) !important;
+        border-radius: 0 !important;
+        padding: 3px 0 !important;
+        font-size: 0.88rem !important;
+        font-weight: 500 !important;
+        color: var(--text) !important;
+        font-family: "DM Sans", sans-serif !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+      .ex-name-inp:focus {
+        border-bottom-color: var(--gold) !important;
+      }
+      .ex-name-inp::placeholder {
+        color: var(--text3);
+        font-weight: 300;
+      }
+
+      .btn-rm-ex {
+        background: none;
+        border: none;
+        color: var(--text3);
+        font-size: 0.82rem;
+        cursor: pointer;
+        padding: 3px;
+        transition: color 0.15s;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      .btn-rm-ex:active {
+        color: var(--red);
+      }
+
+      /* MODE TOGGLE */
+      .mode-row {
+        display: flex;
+        padding: 10px 15px;
+        gap: 6px;
+        border-bottom: 1px solid var(--line);
+      }
+      .mode-btn {
+        flex: 1;
+        background: var(--bg3);
+        border: 1px solid var(--line2);
+        border-radius: var(--radius-xs);
+        color: var(--text3);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 7px 6px;
+        cursor: pointer;
+        transition: var(--trans);
+      }
+      .mode-btn.on {
+        background: var(--gold-mid);
+        color: var(--gold-light);
+        border-color: rgba(201, 169, 110, 0.25);
+      }
+
+      /* UNIFORM */
+      .uniform-body {
+        padding: 13px 15px;
+      }
+
+      /* PER SET */
+      .perset-body {
+        padding: 10px 15px 14px;
+      }
+
+      .ps-header {
+        display: grid;
+        grid-template-columns: 20px 1fr 1fr 1fr 18px;
+        gap: 6px;
+        padding-bottom: 7px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid var(--line);
+      }
+      .ps-header span {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.52rem;
+        font-weight: 300;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text3);
+        text-align: center;
+      }
+
+      .srow {
+        display: grid;
+        grid-template-columns: 20px 1fr 1fr 1fr 18px;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .srow-n {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.85rem;
+        font-style: italic;
+        color: var(--text3);
+        text-align: center;
+      }
+      .sinp {
+        background: var(--bg3) !important;
+        border: 1px solid var(--line2) !important;
+        border-radius: var(--radius-xs) !important;
+        color: var(--text) !important;
+        font-family: "IBM Plex Mono", monospace !important;
+        font-size: 0.78rem !important;
+        font-weight: 300 !important;
+        padding: 6px 4px !important;
+        text-align: center;
+        width: 100%;
+        outline: none;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        -webkit-appearance: none;
+      }
+      .sinp:focus {
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 0 2px rgba(201, 169, 110, 0.08) !important;
+      }
+
+      .btn-rm-s {
+        background: none;
+        border: none;
+        color: var(--line2);
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: color 0.12s;
+        line-height: 1;
+        padding: 0;
+        text-align: center;
+      }
+      .btn-rm-s:active {
+        color: var(--red);
+      }
+
+      .btn-add-s {
+        background: none;
+        border: none;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 300;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text3);
+        padding: 6px 0 0;
+        cursor: pointer;
+        transition: color 0.15s;
+      }
+      .btn-add-s:active {
+        color: var(--gold);
+      }
+
+      /* REST CHIPS */
+      .rest-chips {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .r-chip {
+        background: var(--bg3);
+        border: 1px solid var(--line2);
+        border-radius: 20px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.58rem;
+        font-weight: 300;
+        color: var(--text3);
+        padding: 4px 10px;
+        cursor: pointer;
+        transition: var(--trans);
+      }
+      .r-chip.on {
+        background: var(--gold-mid);
+        color: var(--gold);
+        border-color: rgba(201, 169, 110, 0.3);
+      }
+
+      /* ADD EXERCISE */
+      .btn-add-ex {
+        width: 100%;
+        background: transparent;
+        border: 1px dashed var(--line2);
+        border-radius: var(--radius);
+        color: var(--text3);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 13px;
+        cursor: pointer;
+        margin-bottom: 18px;
+        transition: var(--trans);
+      }
+      .btn-add-ex:active {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+
+      /* SHEET ACTIONS */
+      .sheet-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .btn-save {
+        flex: 1;
+        background: linear-gradient(
+          135deg,
+          var(--gold) 0%,
+          var(--gold-light) 50%,
+          var(--gold) 100%
+        );
+        background-size: 200% 200%;
+        color: #0e0c09;
+        border: none;
+        border-radius: var(--radius);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 15px;
+        cursor: pointer;
+        transition: var(--trans);
+        box-shadow: 0 4px 20px rgba(201, 169, 110, 0.2);
+      }
+      .btn-save:active {
+        transform: scale(0.98);
+        opacity: 0.85;
+      }
+
+      .btn-cancel {
+        background: var(--bg3);
+        border: 1px solid var(--line2);
+        border-radius: var(--radius);
+        color: var(--text3);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 400;
+        padding: 15px 18px;
+        cursor: pointer;
+        transition: var(--trans);
+      }
+      .btn-cancel:active {
+        background: var(--line);
+      }
+
+      /* BW LOG BTN */
+      .btn-bw {
+        background: var(--gold-mid);
+        border: 1px solid rgba(201, 169, 110, 0.2);
+        border-radius: var(--radius-sm);
+        color: var(--gold);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0 14px;
+        cursor: pointer;
+        height: 42px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-bottom: 14px;
+        transition: var(--trans);
+      }
+      .btn-bw:active {
+        opacity: 0.7;
+      }
+
+      /* ─── DETAIL PAGE ─────────────────────────────────────────────────── */
+      .detail-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 300;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text3);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0 0 22px;
+        transition: color 0.15s;
+      }
+      .detail-back:active {
+        color: var(--gold);
+      }
+
+      .detail-name {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        font-size: 2.4rem;
+        letter-spacing: 0.02em;
+        line-height: 1.05;
+        margin-bottom: 5px;
+        color: var(--text);
+      }
+      .detail-date {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 300;
+        color: var(--text3);
+        margin-bottom: 28px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .detail-ex {
+        background: var(--bg1);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+
+      .detail-ex-name {
+        font-size: 0.82rem;
+        font-weight: 500;
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--line);
+        color: var(--text2);
+        letter-spacing: 0.02em;
+      }
+
+      .sets-tbl {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .sets-tbl th {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.52rem;
+        font-weight: 300;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text3);
+        text-align: left;
+        padding: 9px 16px 7px;
+      }
+      .sets-tbl td {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.74rem;
+        font-weight: 300;
+        padding: 8px 16px;
+        border-top: 1px solid var(--line);
+        color: var(--text2);
+      }
+      .sets-tbl td:first-child {
+        color: var(--text3);
+        font-style: italic;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.85rem;
+        width: 28px;
+      }
+      .sets-tbl td:last-child {
+        color: var(--text3);
+        font-size: 0.64rem;
+      }
+
+      .detail-note {
+        background: var(--bg2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        font-size: 0.82rem;
+        font-weight: 300;
+        color: var(--text2);
+        line-height: 1.65;
+        margin-top: 10px;
+        font-style: italic;
+      }
+
+      .btn-del {
+        margin-top: 30px;
+        width: 100%;
+        background: var(--red-dim);
+        border: 1px solid rgba(192, 87, 58, 0.2);
+        border-radius: var(--radius);
+        color: var(--red);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 13px;
+        cursor: pointer;
+        transition: var(--trans);
+        opacity: 0.7;
+      }
+      .btn-del:active {
+        opacity: 1;
+        background: #2a1510;
+      }
+
+      /* ─── DIVIDER ─────────────────────────────────────────────────────── */
+      .gold-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(201, 169, 110, 0.15),
+          transparent
+        );
+        margin: 20px 0;
+      }
+
+      /* ─── SCROLLBAR ───────────────────────────────────────────────────── */
+      ::-webkit-scrollbar {
+        width: 2px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--line2);
+        border-radius: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">Form<span class="logo-dot">.</span></div>
+      <div class="header-right">
+        <div class="header-date" id="hdr-date"></div>
+      </div>
+    </header>
+
+    <main>
+      <!-- LOG ─────────────────────────────────────────────────────────── -->
+      <div id="page-log" class="page on">
+        <div class="pg-top">
+          <div class="pg-kicker">Training</div>
+          <div class="pg-h">Sessions</div>
+        </div>
+
+        <button class="action-btn" onclick="openSheet()">
+          <span>Log New Session</span>
+          <span class="action-btn-ico">+</span>
+        </button>
+
+        <div class="accordion open" id="acc-recent">
+          <div class="acc-head" onclick="toggleAcc('acc-recent')">
+            <div class="acc-left">
+              <div class="acc-label">Recent</div>
+              <span class="acc-badge" id="badge-recent">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="wk-list"></div>
+        </div>
+      </div>
+
+      <!-- EXERCISES ───────────────────────────────────────────────────── -->
+      <div id="page-exercises" class="page">
+        <div class="pg-top">
+          <div class="pg-kicker">Personal Records</div>
+          <div class="pg-h">PR <em>Book</em></div>
+        </div>
+
+        <div class="accordion open" id="acc-push">
+          <div class="acc-head" onclick="toggleAcc('acc-push')">
+            <div class="acc-left">
+              <span class="acc-cat-dot cat-push"></span>
+              <div class="acc-label">Push</div>
+              <span class="acc-badge" id="badge-push">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="pr-push"></div>
+        </div>
+
+        <div class="accordion" id="acc-pull">
+          <div class="acc-head" onclick="toggleAcc('acc-pull')">
+            <div class="acc-left">
+              <span class="acc-cat-dot cat-pull"></span>
+              <div class="acc-label">Pull</div>
+              <span class="acc-badge" id="badge-pull">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="pr-pull"></div>
+        </div>
+
+        <div class="accordion" id="acc-legs">
+          <div class="acc-head" onclick="toggleAcc('acc-legs')">
+            <div class="acc-left">
+              <span class="acc-cat-dot cat-legs"></span>
+              <div class="acc-label">Legs</div>
+              <span class="acc-badge" id="badge-legs">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="pr-legs"></div>
+        </div>
+
+        <div class="accordion" id="acc-core">
+          <div class="acc-head" onclick="toggleAcc('acc-core')">
+            <div class="acc-left">
+              <span class="acc-cat-dot cat-core"></span>
+              <div class="acc-label">Core</div>
+              <span class="acc-badge" id="badge-core">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="pr-core"></div>
+        </div>
+
+        <div class="accordion" id="acc-other">
+          <div class="acc-head" onclick="toggleAcc('acc-other')">
+            <div class="acc-left">
+              <span class="acc-cat-dot cat-other"></span>
+              <div class="acc-label">Other</div>
+              <span class="acc-badge" id="badge-other">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="pr-other"></div>
+        </div>
+      </div>
+
+      <!-- BODY WEIGHT ─────────────────────────────────────────────────── -->
+      <div id="page-weight" class="page">
+        <div class="pg-top">
+          <div class="pg-kicker">Tracking</div>
+          <div class="pg-h">Body <em>Weight</em></div>
+        </div>
+
+        <div class="accordion open" id="acc-bw-add">
+          <div class="acc-head" onclick="toggleAcc('acc-bw-add')">
+            <div class="acc-left"><div class="acc-label">Log Entry</div></div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body">
+            <div class="bw-add-row">
+              <div class="f">
+                <label>Weight (lbs)</label
+                ><input
+                  type="number"
+                  id="bw-in"
+                  placeholder="185.5"
+                  step="0.1"
+                  inputmode="decimal"
+                />
+              </div>
+              <div class="f" style="max-width: 130px">
+                <label>Date</label><input type="date" id="bw-date-in" />
+              </div>
+              <button class="btn-bw" onclick="logBW()">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion open" id="acc-bw-hist" style="margin-top: 8px">
+          <div class="acc-head" onclick="toggleAcc('acc-bw-hist')">
+            <div class="acc-left">
+              <div class="acc-label">History</div>
+              <span class="acc-badge" id="badge-bw">—</span>
+            </div>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body" id="bw-list"></div>
+        </div>
+      </div>
+
+      <!-- DETAIL ──────────────────────────────────────────────────────── -->
+      <div id="page-detail" class="page">
+        <button class="detail-back" onclick="navTo('log')">← Back</button>
+        <div class="detail-name" id="d-name"></div>
+        <div class="detail-date" id="d-date"></div>
+        <div id="d-body"></div>
+        <button class="btn-del" onclick="delWk()">Delete Session</button>
+      </div>
+    </main>
+
+    <!-- BOTTOM NAV ──────────────────────────────────────────────────── -->
+    <nav class="bottom-nav">
+      <button class="bnav-btn on" id="bn-log" onclick="navTo('log')">
+        <div class="bnav-icon">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+        </div>
+        Log
+      </button>
+      <button class="bnav-btn" id="bn-exercises" onclick="navTo('exercises')">
+        <div class="bnav-icon">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+        </div>
+        PRs
+      </button>
+      <button class="bnav-btn" id="bn-weight" onclick="navTo('weight')">
+        <div class="bnav-icon">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+            />
+          </svg>
+        </div>
+        Weight
+      </button>
+    </nav>
+
+    <!-- SHEET ───────────────────────────────────────────────────────── -->
+    <div class="sheet-overlay" id="sheet-overlay" onclick="ovClick(event)">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">New Session</div>
+        <div class="sheet-body">
+          <div class="two-col">
+            <div class="f">
+              <label>Session Name</label
+              ><input
+                type="text"
+                id="wk-name"
+                placeholder="Push / Pull / Lower…"
+              />
+            </div>
+            <div class="f">
+              <label>Date</label><input type="date" id="wk-date" />
+            </div>
+          </div>
+          <div class="gold-divider"></div>
+          <div id="ex-container"></div>
+          <button class="btn-add-ex" onclick="addEx()">+ Add Exercise</button>
+          <div class="f">
+            <label>Notes</label
+            ><textarea
+              id="wk-notes"
+              placeholder="PRs hit, how you felt, anything worth noting…"
+            ></textarea>
+          </div>
+          <div class="sheet-actions">
+            <button class="btn-cancel" onclick="closeSheet()">Cancel</button>
+            <button class="btn-save" onclick="saveWk()">Save Session</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── STATE ──────────────────────────────────────────────────────────────────
+      let WKS = JSON.parse(localStorage.getItem("form_wk") || "[]");
+      let BWS = JSON.parse(localStorage.getItem("form_bw") || "[]");
+      let exCtr = 0,
+        setCtr = {},
+        detId = null;
+
+      // ── INIT ───────────────────────────────────────────────────────────────────
+      (function () {
+        const d = new Date();
+        const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        const MONTHS = [
+          "JAN",
+          "FEB",
+          "MAR",
+          "APR",
+          "MAY",
+          "JUN",
+          "JUL",
+          "AUG",
+          "SEP",
+          "OCT",
+          "NOV",
+          "DEC",
+        ];
+        document.getElementById("hdr-date").textContent =
+          `${DAYS[d.getDay()]} · ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+        document.getElementById("wk-date").value = d
+          .toISOString()
+          .split("T")[0];
+        document.getElementById("bw-date-in").value = d
+          .toISOString()
+          .split("T")[0];
+        render();
+      })();
+
+      // ── NAV ────────────────────────────────────────────────────────────────────
+      function navTo(page) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("on"));
+        document
+          .querySelectorAll(".bnav-btn")
+          .forEach((b) => b.classList.remove("on"));
+        document.getElementById("page-" + page).classList.add("on");
+        const map = {
+          log: "bn-log",
+          exercises: "bn-exercises",
+          weight: "bn-weight",
+        };
+        if (map[page]) document.getElementById(map[page]).classList.add("on");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // ── ACCORDION ──────────────────────────────────────────────────────────────
+      function toggleAcc(id) {
+        document.getElementById(id).classList.toggle("open");
+      }
+
+      // ── RENDER ─────────────────────────────────────────────────────────────────
+      function render() {
+        renderLog();
+        renderPR();
+        renderBW();
+      }
+
+      // ── RENDER LOG ─────────────────────────────────────────────────────────────
+      function renderLog() {
+        const el = document.getElementById("wk-list");
+        const badge = document.getElementById("badge-recent");
+        if (!WKS.length) {
+          el.innerHTML = '<div class="empty">No sessions logged yet.</div>';
+          badge.textContent = "—";
+          return;
+        }
+        const sorted = [...WKS].sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        badge.textContent = sorted.length;
+        const MONTHS = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        el.innerHTML = sorted
+          .map((w) => {
+            const d = new Date(w.date + "T12:00:00");
+            const totalSets = (w.exercises || []).reduce(
+              (acc, e) =>
+                acc +
+                (e.mode === "per"
+                  ? (e.sets || []).length
+                  : parseInt(e.uSets) || 0),
+              0,
+            );
+            const exN = (w.exercises || []).length;
+            return `<div class="wk-row" onclick="showDetail('${w.id}')">
+      <div class="wk-date-pill">
+        <div class="wk-date-day">${d.getDate()}</div>
+        <div class="wk-date-mon">${MONTHS[d.getMonth()]}</div>
+      </div>
+      <div class="wk-info">
+        <div class="wk-name">${w.name}</div>
+        <div class="wk-meta">${exN} exercises · ${totalSets} sets</div>
+      </div>
+      <div class="wk-chev">›</div>
+    </div>`;
+          })
+          .join("");
+      }
+
+      // ── RENDER PR ──────────────────────────────────────────────────────────────
+      const getCAT = (n) => {
+        const l = n.toLowerCase();
+        if (/press|push|dip|fly|tricep|chest|incline|decline/.test(l))
+          return "push";
+        if (/pull|row|curl|dead|chin|lat|shrug|rear|rdl/.test(l)) return "pull";
+        if (/squat|lunge|leg|calf|hip|glute|hamstring/.test(l)) return "legs";
+        if (/plank|crunch|ab|core|sit.up|oblique|twist/.test(l)) return "core";
+        return "other";
+      };
+
+      function renderPR() {
+        const prs = {};
+        WKS.forEach((w) => {
+          (w.exercises || []).forEach((ex) => {
+            const k = ex.name.trim();
+            if (!k) return;
+            let mx = 0;
+            if (ex.mode === "per")
+              (ex.sets || []).forEach((s) => {
+                const v = parseFloat(s.weight) || 0;
+                if (v > mx) mx = v;
+              });
+            else mx = parseFloat(ex.uWeight) || 0;
+            if (!prs[k] || mx > prs[k]) prs[k] = mx;
+          });
+        });
+
+        const cats = { push: [], pull: [], legs: [], core: [], other: [] };
+        Object.entries(prs).forEach(([name, w]) =>
+          cats[getCAT(name)].push({ name, w }),
+        );
+
+        ["push", "pull", "legs", "core", "other"].forEach((cat) => {
+          const el = document.getElementById(`pr-${cat}`);
+          const badge = document.getElementById(`badge-${cat}`);
+          const items = cats[cat].sort((a, b) => a.name.localeCompare(b.name));
+          badge.textContent = items.length || "—";
+          if (!items.length) {
+            el.innerHTML = '<div class="empty">None yet.</div>';
+            return;
+          }
+          el.innerHTML = items
+            .map(
+              ({ name, w }) => `
+      <div class="pr-row">
+        <div class="pr-dot cat-${cat}"></div>
+        <div class="pr-name">${name}</div>
+        <div class="pr-val">${w > 0 ? w + " lbs" : "BW"}</div>
+      </div>`,
+            )
+            .join("");
+        });
+      }
+
+      // ── RENDER BW ──────────────────────────────────────────────────────────────
+      function renderBW() {
+        const el = document.getElementById("bw-list");
+        const badge = document.getElementById("badge-bw");
+        if (!BWS.length) {
+          el.innerHTML = '<div class="empty">No entries yet.</div>';
+          badge.textContent = "—";
+          return;
+        }
+        const sorted = [...BWS].sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        badge.textContent = sorted.length;
+        const MONTHS = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        el.innerHTML = sorted
+          .map((e, i) => {
+            const prev = sorted[i + 1];
+            let delta = "";
+            if (prev) {
+              const diff = +(e.weight - prev.weight).toFixed(1);
+              const cls =
+                diff > 0 ? "delta-up" : diff < 0 ? "delta-dn" : "delta-eq";
+              const sign = diff > 0 ? "+" : "";
+              delta = `<span class="bw-delta ${cls}">${sign}${diff}</span>`;
+            }
+            const d = new Date(e.date + "T12:00:00");
+            return `<div class="bw-row">
+      <div class="bw-date">${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}</div>
+      <div class="bw-w">${e.weight}<span class="bw-unit">lbs</span></div>
+      ${delta}
+    </div>`;
+          })
+          .join("");
+      }
+
+      function logBW() {
+        const v = parseFloat(document.getElementById("bw-in").value);
+        const dt = document.getElementById("bw-date-in").value;
+        if (!v || v <= 0 || !dt) return;
+        BWS.unshift({ id: Date.now().toString(), date: dt, weight: v });
+        localStorage.setItem("form_bw", JSON.stringify(BWS));
+        document.getElementById("bw-in").value = "";
+        renderBW();
+      }
+
+      // ── SHEET ──────────────────────────────────────────────────────────────────
+      function openSheet() {
+        document.getElementById("wk-name").value = "";
+        document.getElementById("wk-date").value = new Date()
+          .toISOString()
+          .split("T")[0];
+        document.getElementById("wk-notes").value = "";
+        document.getElementById("ex-container").innerHTML = "";
+        exCtr = 0;
+        setCtr = {};
+        addEx();
+        document.getElementById("sheet-overlay").classList.add("on");
+        document.body.style.overflow = "hidden";
+      }
+      function closeSheet() {
+        document.getElementById("sheet-overlay").classList.remove("on");
+        document.body.style.overflow = "";
+      }
+      function ovClick(e) {
+        if (e.target === document.getElementById("sheet-overlay")) closeSheet();
+      }
+
+      // ── EXERCISES ──────────────────────────────────────────────────────────────
+      function addEx() {
+        exCtr++;
+        const id = exCtr;
+        setCtr[id] = 3;
+        const d = document.createElement("div");
+        d.className = "ex-block";
+        d.id = `ex-${id}`;
+        d.innerHTML = `
+    <div class="ex-head">
+      <span class="ex-idx">${id}</span>
+      <input class="ex-name-inp" type="text" id="en-${id}" placeholder="Exercise name"/>
+      <button class="btn-rm-ex" onclick="rmEx(${id})">✕</button>
+    </div>
+    <div class="mode-row">
+      <button class="mode-btn on" id="mu-${id}" onclick="setMode(${id},'u')">Uniform</button>
+      <button class="mode-btn" id="mp-${id}" onclick="setMode(${id},'p')">Per Set</button>
+    </div>
+    <div id="eb-${id}"></div>`;
+        document.getElementById("ex-container").appendChild(d);
+        renderUniform(id);
+      }
+
+      function rmEx(id) {
+        const e = document.getElementById(`ex-${id}`);
+        if (e) e.remove();
+      }
+
+      function setMode(id, m) {
+        document.getElementById(`mu-${id}`).classList.toggle("on", m === "u");
+        document.getElementById(`mp-${id}`).classList.toggle("on", m === "p");
+        if (m === "u") renderUniform(id);
+        else renderPerSet(id);
+      }
+
+      function restChips(inputId) {
+        return `<div class="rest-chips">${[60, 90, 120, 180]
+          .map(
+            (v) =>
+              `<button type="button" class="r-chip" onclick="setRest('${inputId}',${v},this)">${v}s</button>`,
+          )
+          .join("")}</div>`;
+      }
+      function setRest(inputId, val, btn) {
+        document.getElementById(inputId).value = val;
+        btn
+          .closest(".rest-chips")
+          .querySelectorAll(".r-chip")
+          .forEach((b) => b.classList.remove("on"));
+        btn.classList.add("on");
+      }
+
+      function renderUniform(id) {
+        document.getElementById(`eb-${id}`).innerHTML = `
+    <div class="uniform-body">
+      <div class="three-col">
+        <div class="f"><label>Sets</label><input type="number" id="us-${id}" placeholder="4" min="1" value="3" inputmode="numeric"/></div>
+        <div class="f"><label>Reps</label><input type="number" id="ur-${id}" placeholder="8" min="1" inputmode="numeric"/></div>
+        <div class="f"><label>Weight</label><input type="number" id="uw-${id}" placeholder="135" step="2.5" inputmode="decimal"/></div>
+      </div>
+      <div class="f" style="margin-bottom:4px"><label>Rest (sec)</label><input type="number" id="urst-${id}" placeholder="90" style="max-width:100px" inputmode="numeric"/></div>
+      ${restChips("urst-" + id)}
+    </div>`;
+      }
+
+      function renderPerSet(id) {
+        const n = setCtr[id] || 3;
+        document.getElementById(`eb-${id}`).innerHTML = `
+    <div class="perset-body">
+      <div class="ps-header">
+        <span>#</span><span>Reps</span><span>Weight</span><span>Rest</span><span></span>
+      </div>
+      <div id="sr-${id}"></div>
+      <button class="btn-add-s" onclick="addSRow(${id})">+ Add Set</button>
+    </div>`;
+        for (let s = 1; s <= n; s++) appendSRow(id, s);
+      }
+
+      function addSRow(id) {
+        setCtr[id] = (setCtr[id] || 1) + 1;
+        appendSRow(id, setCtr[id]);
+      }
+
+      function appendSRow(id, s) {
+        const r = document.getElementById(`sr-${id}`);
+        const d = document.createElement("div");
+        d.className = "srow";
+        d.id = `srow-${id}-${s}`;
+        d.innerHTML = `
+    <div class="srow-n">${s}</div>
+    <input class="sinp" type="number" id="srr-${id}-${s}" placeholder="8" min="1" inputmode="numeric"/>
+    <input class="sinp" type="number" id="srw-${id}-${s}" placeholder="135" step="2.5" inputmode="decimal"/>
+    <input class="sinp" type="number" id="srst-${id}-${s}" placeholder="90" step="15" inputmode="numeric"/>
+    <button class="btn-rm-s" onclick="rmSRow(${id},${s})">✕</button>`;
+        r.appendChild(d);
+      }
+
+      function rmSRow(id, s) {
+        const e = document.getElementById(`srow-${id}-${s}`);
+        if (e) e.remove();
+      }
+
+      // ── SAVE ───────────────────────────────────────────────────────────────────
+      function saveWk() {
+        const name = document.getElementById("wk-name").value.trim();
+        if (!name) {
+          document.getElementById("wk-name").focus();
+          return;
+        }
+        const date = document.getElementById("wk-date").value;
+        const notes = document.getElementById("wk-notes").value.trim();
+        const exercises = [];
+
+        document.querySelectorAll(".ex-block").forEach((block) => {
+          const bid = block.id.split("-")[1];
+          const nm = document.getElementById(`en-${bid}`)?.value.trim();
+          if (!nm) return;
+          const isPer = document
+            .getElementById(`mp-${bid}`)
+            ?.classList.contains("on");
+          if (isPer) {
+            const sets = [];
+            block.querySelectorAll(".srow").forEach((row) => {
+              const parts = row.id.split("-");
+              const si = parts[parts.length - 1];
+              sets.push({
+                reps: document.getElementById(`srr-${bid}-${si}`)?.value || "",
+                weight:
+                  document.getElementById(`srw-${bid}-${si}`)?.value || "",
+                rest: document.getElementById(`srst-${bid}-${si}`)?.value || "",
+              });
+            });
+            exercises.push({ name: nm, mode: "per", sets });
+          } else {
+            exercises.push({
+              name: nm,
+              mode: "uniform",
+              uSets: document.getElementById(`us-${bid}`)?.value || "",
+              uReps: document.getElementById(`ur-${bid}`)?.value || "",
+              uWeight: document.getElementById(`uw-${bid}`)?.value || "",
+              uRest: document.getElementById(`urst-${bid}`)?.value || "",
+            });
+          }
+        });
+
+        WKS.unshift({
+          id: Date.now().toString(),
+          name,
+          date,
+          notes,
+          exercises,
+          ts: new Date().toISOString(),
+        });
+        localStorage.setItem("form_wk", JSON.stringify(WKS));
+        closeSheet();
+        render();
+      }
+
+      // ── DETAIL ─────────────────────────────────────────────────────────────────
+      function showDetail(id) {
+        const w = WKS.find((x) => x.id === id);
+        if (!w) return;
+        detId = id;
+        document.getElementById("d-name").textContent = w.name;
+        const d = new Date(w.date + "T12:00:00");
+        const MONTHS = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const DAYS = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        document.getElementById("d-date").textContent =
+          `${DAYS[d.getDay()]} · ${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`.toUpperCase();
+
+        let html = (w.exercises || [])
+          .map((ex) => {
+            let rows = "";
+            if (ex.mode === "per") {
+              (ex.sets || []).forEach((s, i) => {
+                rows += `<tr>
+          <td>${i + 1}</td>
+          <td>${s.reps || "—"}</td>
+          <td>${s.weight ? s.weight + " lbs" : "BW"}</td>
+          <td>${s.rest ? s.rest + "s" : ""}</td>
+        </tr>`;
+              });
+            } else {
+              const n = parseInt(ex.uSets) || 0;
+              for (let i = 1; i <= n; i++)
+                rows += `<tr>
+        <td>${i}</td>
+        <td>${ex.uReps || "—"}</td>
+        <td>${ex.uWeight ? ex.uWeight + " lbs" : "BW"}</td>
+        <td>${i === 1 && ex.uRest ? ex.uRest + "s" : ""}</td>
+      </tr>`;
+            }
+            return `<div class="detail-ex">
+      <div class="detail-ex-name">${ex.name}</div>
+      <table class="sets-tbl">
+        <thead><tr><th>#</th><th>Reps</th><th>Weight</th><th>Rest</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+          })
+          .join("");
+
+        if (w.notes) html += `<div class="detail-note">${w.notes}</div>`;
+        document.getElementById("d-body").innerHTML = html;
+
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("on"));
+        document
+          .querySelectorAll(".bnav-btn")
+          .forEach((b) => b.classList.remove("on"));
+        document.getElementById("page-detail").classList.add("on");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function delWk() {
+        if (!detId) return;
+        if (!confirm("Delete this session?")) return;
+        WKS = WKS.filter((w) => w.id !== detId);
+        localStorage.setItem("form_wk", JSON.stringify(WKS));
+        detId = null;
+        render();
+        navTo("log");
+      }
+    </script>
+  </body>
+</html>
