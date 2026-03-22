@@ -1,4 +1,4 @@
-const CACHE = 'bloc-v2';
+const CACHE = 'bloc-v3';
 const ASSETS = [
   '/bloc/',
   '/bloc/index.html',
