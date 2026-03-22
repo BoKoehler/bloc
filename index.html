@@ -16,7 +16,7 @@
 :root{
   --bg:#0f0f11;--s1:#161618;--s2:#1c1c1f;--s3:#242428;--s4:#2c2c31;
   --line:#252528;--line2:#303035;
-  --t1:#f2f2f4;--t2:#a8a8b0;--t3:#585860;--t4:#38383e;
+  --t1:#f2f2f4;--t2:#a8a8b0;--t3:#6e6e78;--t4:#38383e;
   --accent:#e8533a;--accent2:#ff6b50;--adim:#2a1510;--adim2:#1e0f0a;
   --blue:#4a9eff;--bluedim:#0d1e33;--green:#3dd68c;--gdim:#0a2318;
   --r:14px;--rsm:9px;--rxs:6px;
@@ -29,6 +29,7 @@ body{
   min-height:100dvh;overscroll-behavior:none;
   padding-bottom:calc(72px + env(safe-area-inset-bottom));
 }
+body.scroll-locked{overflow:hidden}
 
 /* ═══ HEADER ═══════════════════════════════════════════════════ */
 .hdr{
@@ -320,6 +321,18 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
 .detail-note{background:var(--s2);border:1px solid var(--line);border-radius:var(--r);padding:13px 16px;font-size:0.82rem;font-weight:300;color:var(--t2);line-height:1.6;margin-top:10px;font-style:italic}
 .btn-del{margin-top:24px;width:100%;background:var(--adim2);border:1px solid rgba(232,83,58,0.15);border-radius:var(--r);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;padding:13px;cursor:pointer;transition:all 0.14s;opacity:0.7}
 .btn-del:active{opacity:1;background:var(--adim)}
+.btn-start-workout{
+  width:100%;background:var(--accent);color:#fff;border:none;
+  border-radius:var(--r);
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;
+  letter-spacing:0.14em;text-transform:uppercase;
+  padding:15px 20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:20px;
+  transition:all 0.16s var(--ease);
+  box-shadow:0 4px 20px rgba(232,83,58,0.25);
+}
+.btn-start-workout:active{transform:scale(0.98);box-shadow:none}
 
 /* ═══ SETTINGS SHEET ════════════════════════════════════════════ */
 .settings-row{
@@ -353,11 +366,72 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ═══ CUSTOM CONFIRM DIALOG ══════════════════════════════════════ */
+.confirm-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:flex-end;justify-content:center}
+.confirm-overlay.on{display:flex;animation:fadeIn 0.15s var(--ease)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.confirm-sheet{
+  background:var(--s1);width:100%;max-width:480px;
+  border-radius:22px 22px 0 0;border-top:1px solid var(--line2);
+  padding:24px 20px calc(28px + env(safe-area-inset-bottom));
+  animation:shUp 0.22s cubic-bezier(0.32,1.1,0.36,1);
+}
+.confirm-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--t1);margin-bottom:6px}
+.confirm-msg{font-family:'Barlow',sans-serif;font-size:0.84rem;font-weight:400;color:var(--t2);margin-bottom:22px;line-height:1.5}
+.confirm-btns{display:flex;gap:8px}
+.confirm-ok{
+  flex:1;border:none;border-radius:var(--r);
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:14px;cursor:pointer;transition:opacity 0.14s;color:#fff;
+  background:var(--accent);box-shadow:0 4px 16px rgba(232,83,58,0.25);
+}
+.confirm-ok.danger{background:var(--accent)}
+.confirm-ok:active{opacity:0.8}
+.confirm-cancel{
+  background:var(--s3);border:1px solid var(--line2);border-radius:var(--r);
+  color:var(--t2);font-family:'Barlow',sans-serif;font-size:0.8rem;font-weight:500;
+  padding:14px 18px;cursor:pointer;transition:all 0.14s;
+}
+.confirm-cancel:active{background:var(--s4)}
+
+/* ═══ FIELD VALIDATION ERROR ════════════════════════════════════ */
+.field-error{
+  font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:400;
+  color:var(--accent);margin-top:5px;display:none;
+}
+.field-error.on{display:block}
+.f input.invalid{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(232,83,58,0.12)!important}
+
+/* ═══ HOVER STATES (desktop) ═════════════════════════════════════ */
+@media(hover:hover){
+  .acc-hd:hover{background:var(--s2)}
+  .session-row:hover{background:var(--s2)}
+  .tmpl-row:hover{background:var(--s2)}
+  .settings-row:hover{background:var(--s2)}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-save:hover{filter:brightness(1.08)}
+  .btn-bw:hover{opacity:0.88}
+}
+
 /* ═══ MISC ════════════════════════════════════════════════════════ */
 .empty{padding:40px 16px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.06em;color:var(--t3);text-transform:uppercase}
 ::-webkit-scrollbar{width:2px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--line2);border-radius:1px}
+
+/* ═══ ACTIVE MODE COL HEADERS ════════════════════════════════════ */
+.wm-col-hdr{font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center}
+.wm-header-right{display:flex;align-items:center;gap:10px}
+
+/* ═══ RESPONSIVE ═════════════════════════════════════════════════ */
+@media(max-width:360px){
+  .sheet-body{padding:0 14px}
+  .sheet-title{padding:0 14px 14px}
+  .ps-hdr,.srow{grid-template-columns:18px 1fr 1fr 72px 18px;gap:5px}
+  .bw-add-row{flex-wrap:wrap}
+  .bw-add-row .f:first-child{flex:1}
+  .bw-add-row .f:nth-child(2){max-width:none;width:100%}
+}
 </style>
 </head>
 <body>
@@ -394,9 +468,8 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
     <div class="acc-bd" id="tmpl-list"></div>
   </div>
   <div class="acc open" id="acc-sessions" style="margin-top:8px">
-    <div class="acc-hd" onclick="toggleAcc('acc-sessions')">
+    <div class="acc-hd" style="cursor:default">
       <div class="acc-hd-l"><div class="acc-hd-title">History</div><span class="acc-badge" id="badge-sessions">0</span></div>
-      <span class="acc-chev">▾</span>
     </div>
     <div class="acc-bd" id="session-list"></div>
   </div>
@@ -446,6 +519,10 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
   <div class="detail-name" id="d-name"></div>
   <div class="detail-date" id="d-date"></div>
   <div class="detail-meta-row" id="d-meta"></div>
+  <button class="btn-start-workout" id="detail-start-btn" style="display:none">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Start Workout
+  </button>
   <div id="d-body"></div>
   <button class="btn-del" onclick="delWk()">Delete Session</button>
 </div>
@@ -483,7 +560,8 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
       <div class="f"><label>Session Notes</label><textarea id="wk-notes" placeholder="PRs, energy, anything worth noting…"></textarea></div>
       <div class="save-tmpl-row">
         <span class="save-tmpl-label">Save as Template</span>
-        <div class="toggle" id="save-tmpl-toggle" onclick="this.classList.toggle('on')"></div>
+        <button role="switch" aria-checked="false" class="toggle" id="save-tmpl-toggle"
+          onclick="this.classList.toggle('on');this.setAttribute('aria-checked',this.classList.contains('on'))"></button>
       </div>
       <div class="sheet-actions">
         <button class="btn-cancel" onclick="closeSheet()">Cancel</button>
@@ -497,7 +575,7 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
 <div class="workout-mode" id="workout-mode">
   <div class="wm-header">
     <div><div class="wm-title" id="wm-title">Session</div></div>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div class="wm-header-right">
       <div class="wm-elapsed" id="wm-elapsed">0:00</div>
       <button class="wm-finish-btn" onclick="finishWorkout()">Finish</button>
     </div>
@@ -514,8 +592,7 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
 <!-- SETTINGS SHEET -->
 <div class="overlay" id="settings-overlay" onclick="settingsOvClick(event)">
   <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">Settings</div>
+    <div class="sheet-title" style="margin-top:20px">Settings</div>
     <div>
       <div class="settings-row" onclick="exportData()">
         <div class="settings-row-l">
@@ -549,6 +626,18 @@ main{max-width:480px;margin:0 auto;padding:18px 16px 0}
   </div>
 </div>
 
+<!-- CUSTOM CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-sheet">
+    <div class="confirm-title" id="confirm-title">Are you sure?</div>
+    <div class="confirm-msg" id="confirm-msg"></div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" id="confirm-cancel-btn" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-ok" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -558,8 +647,40 @@ let WKS       = JSON.parse(localStorage.getItem('bloc_wk')   || '[]');
 let BWS       = JSON.parse(localStorage.getItem('bloc_bw')   || '[]');
 let TEMPLATES = JSON.parse(localStorage.getItem('bloc_tmpl') || '[]');
 let exCtr=0, setCtr={}, detId=null;
-let wmTimer=null, wmRestTimer=null, wmStart=null, wmDraft=null;
+let wmTimer=null, wmStart=null, wmDraft=null;
 let restInterval=null, restRemaining=0;
+
+// ══ SECURITY — escape all user-controlled strings before innerHTML ══
+function esc(s){
+  return String(s==null?'':s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ══ SCROLL LOCK — ref-counted, prevents multiple overlays stomping each other ══
+let _lockCount=0;
+function lockScroll(){_lockCount++;document.body.classList.add('scroll-locked');}
+function unlockScroll(){_lockCount=Math.max(0,_lockCount-1);if(_lockCount===0)document.body.classList.remove('scroll-locked');}
+// Always start unlocked — clears any stuck state from a crashed previous session
+document.body.classList.remove('scroll-locked'); _lockCount=0;
+
+// ══ ACCORDION STATE ════════════════════════════════════════════════
+let accState=JSON.parse(localStorage.getItem('bloc_acc')||'{}');
+// Sessions history should always be visible — clear any stored closed state
+delete accState['acc-sessions'];
+
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const RESTS=[60,90,120,180];
+
+const getCAT=n=>{
+  const l=n.toLowerCase();
+  if(/press|push|dip|fly|tricep|chest|incline|decline/.test(l)) return 'push';
+  if(/pull|row|curl|dead|chin|lat|shrug|rear|rdl/.test(l)) return 'pull';
+  if(/squat|lunge|leg|calf|hip|glute|hamstring/.test(l)) return 'legs';
+  if(/plank|crunch|ab|core|sit.up|oblique/.test(l)) return 'core';
+  return 'other';
+};
+function calc1RM(w,r){if(!w||!r||r===1) return w; return Math.round(w*(1+r/30));}
 
 // ══ INIT ═══════════════════════════════════════════════════════════
 (function(){
@@ -570,6 +691,7 @@ let restInterval=null, restRemaining=0;
   document.getElementById('wk-date').value=d.toISOString().split('T')[0];
   document.getElementById('bw-date-in').value=d.toISOString().split('T')[0];
   render();
+  restoreAccState();
   // Register service worker
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(()=>{});
@@ -585,12 +707,23 @@ function navTo(page){
   if(map[page]) document.getElementById(map[page]).classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function toggleAcc(id){document.getElementById(id).classList.toggle('open')}
+function toggleAcc(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+  accState[id]=el.classList.contains('open');
+  localStorage.setItem('bloc_acc',JSON.stringify(accState));
+}
+function restoreAccState(){
+  Object.keys(accState).forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(accState[id]===true) el.classList.add('open');
+    else if(accState[id]===false) el.classList.remove('open');
+  });
+}
 
 // ══ RENDER ═════════════════════════════════════════════════════════
 function render(){renderLog();renderTemplates();renderPR();renderBW();}
-
-const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // ── Session list
 function renderLog(){
@@ -603,10 +736,10 @@ function renderLog(){
     const d=new Date(w.date+'T12:00:00');
     const totalSets=calcTotalSets(w.exercises||[]);
     const totalVol=calcVolume(w.exercises||[]);
-    return `<div class="session-row" onclick="showDetail('${w.id}')">
+    return `<div class="session-row" onclick="showDetail('${esc(w.id)}')">
       <div class="sess-date"><div class="sess-day">${d.getDate()}</div><div class="sess-mon">${MON[d.getMonth()]}</div></div>
       <div class="sess-info">
-        <div class="sess-name">${w.name}</div>
+        <div class="sess-name">${esc(w.name)}</div>
         <div class="sess-meta">${(w.exercises||[]).length} ex · ${totalSets} sets · ${fmtVol(totalVol)}</div>
       </div>
       <div class="sess-chev">›</div>
@@ -618,27 +751,27 @@ function renderLog(){
 function renderTemplates(){
   const el=document.getElementById('tmpl-list');
   const badge=document.getElementById('badge-tmpl');
-  if(!TEMPLATES.length){el.innerHTML='<div class="empty">No templates yet.</div>';badge.textContent='0';return;}
+  if(!TEMPLATES.length){el.innerHTML='<div class="empty" style="font-size:0.78rem;font-weight:400;text-transform:none;letter-spacing:0;padding:28px 20px;line-height:1.6;color:var(--t3)">Log a session with the <strong style="color:var(--t2)">Save as Template</strong> toggle enabled and it will appear here.</div>';badge.textContent='0';return;}
   badge.textContent=TEMPLATES.length;
   el.innerHTML=TEMPLATES.map(t=>`
     <div class="tmpl-row">
       <div class="tmpl-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
       <div class="tmpl-info">
-        <div class="tmpl-name">${t.name}</div>
+        <div class="tmpl-name">${esc(t.name)}</div>
         <div class="tmpl-meta">${(t.exercises||[]).length} exercises</div>
       </div>
       <div class="tmpl-actions">
-        <button class="tmpl-use-btn" onclick="loadTemplate('${t.id}')">Use</button>
-        <button class="tmpl-del-btn" onclick="deleteTemplate('${t.id}')">✕</button>
+        <button class="tmpl-use-btn" onclick="loadTemplate('${esc(t.id)}')">Use</button>
+        <button class="tmpl-del-btn" onclick="deleteTemplate('${esc(t.id)}')">✕</button>
       </div>
     </div>`).join('');
 }
 
 function loadTemplate(id){
   const t=TEMPLATES.find(x=>x.id===id); if(!t) return;
+  // Open sheet first (resets form), then populate — prevents openSheet wiping values
+  openSheet();
   document.getElementById('wk-name').value=t.name;
-  document.getElementById('wk-date').value=new Date().toISOString().split('T')[0];
-  document.getElementById('wk-notes').value='';
   document.getElementById('ex-container').innerHTML='';
   exCtr=0; setCtr={};
   (t.exercises||[]).forEach(ex=>{
@@ -657,26 +790,18 @@ function loadTemplate(id){
       if(ex.uRest){ document.getElementById(`urst-${eid}`).value=ex.uRest; }
     }
   });
-  openSheet();
 }
 
 function deleteTemplate(id){
-  TEMPLATES=TEMPLATES.filter(t=>t.id!==id);
-  localStorage.setItem('bloc_tmpl',JSON.stringify(TEMPLATES));
-  renderTemplates();
+  showConfirm('This template will be removed. Sessions logged from it are not affected.','Delete Template',()=>{
+    TEMPLATES=TEMPLATES.filter(t=>t.id!==id);
+    localStorage.setItem('bloc_tmpl',JSON.stringify(TEMPLATES));
+    renderTemplates();
+    toast('Template deleted');
+  },'Delete this template?');
 }
 
 // ── PR Book
-const getCAT=n=>{
-  const l=n.toLowerCase();
-  if(/press|push|dip|fly|tricep|chest|incline|decline/.test(l)) return 'push';
-  if(/pull|row|curl|dead|chin|lat|shrug|rear|rdl/.test(l)) return 'pull';
-  if(/squat|lunge|leg|calf|hip|glute|hamstring/.test(l)) return 'legs';
-  if(/plank|crunch|ab|core|sit.up|oblique/.test(l)) return 'core';
-  return 'other';
-};
-function calc1RM(w,r){if(!w||!r||r===1) return w; return Math.round(w*(1+r/30));}
-
 function renderPR(){
   const prs={};
   WKS.forEach(w=>{
@@ -702,7 +827,7 @@ function renderPR(){
       const orm=calc1RM(weight,reps);
       return `<div class="pr-row">
         <div class="pr-dot cat-${cat}"></div>
-        <div class="pr-name">${name}</div>
+        <div class="pr-name">${esc(name)}</div>
         <div class="pr-stats">
           <div class="pr-weight">${weight>0?weight+' lbs':'BW'}</div>
           ${orm&&weight>0?`<div class="pr-1rm">~${orm} 1RM</div>`:''}
@@ -748,7 +873,8 @@ function renderBW(){
 function logBW(){
   const v=parseFloat(document.getElementById('bw-in').value);
   const dt=document.getElementById('bw-date-in').value;
-  if(!v||v<=0||!dt) return;
+  if(!v||v<=0){toast('Enter a weight first');return;}
+  if(!dt){toast('Select a date first');return;}
   BWS.unshift({id:Date.now().toString(),date:dt,weight:v});
   localStorage.setItem('bloc_bw',JSON.stringify(BWS));
   document.getElementById('bw-in').value='';
@@ -763,12 +889,13 @@ function openSheet(){
   document.getElementById('wk-notes').value='';
   document.getElementById('ex-container').innerHTML='';
   document.getElementById('save-tmpl-toggle').classList.remove('on');
+  document.getElementById('save-tmpl-toggle').setAttribute('aria-checked','false');
   exCtr=0; setCtr={};
   addEx();
   document.getElementById('sheet-overlay').classList.add('on');
-  document.body.style.overflow='hidden';
+  lockScroll();
 }
-function closeSheet(){document.getElementById('sheet-overlay').classList.remove('on');document.body.style.overflow='';}
+function closeSheet(){document.getElementById('sheet-overlay').classList.remove('on');unlockScroll();}
 function ovClick(e){if(e.target===document.getElementById('sheet-overlay'))closeSheet();}
 
 // ══ EXERCISES ══════════════════════════════════════════════════════
@@ -822,24 +949,23 @@ function showHist(id,filter){
   });
   if(!history.length){popup.classList.remove('open');return;}
   popup.innerHTML=history.map(h=>`
-    <div class="hist-entry" onmousedown="fillExName(${id},'${h.exName.replace(/'/g,"\\'")}')">
+    <div class="hist-entry" onmousedown="fillExName(${id},'${h.exName.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}',event)" ontouchstart="fillExName(${id},'${h.exName.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}',event)">
       <div class="hist-entry-top">
-        <span class="hist-date">${h.date}</span>
+        <span class="hist-date">${esc(h.date)}</span>
         ${h.vol?`<span class="hist-vol">${fmtVol(h.vol)}</span>`:''}
       </div>
-      <div class="hist-sets">${h.setsStr}</div>
+      <div class="hist-sets">${esc(h.setsStr)}</div>
     </div>`).join('');
   popup.classList.add('open');
 }
 function hideHist(id){setTimeout(()=>{const p=document.getElementById(`hist-${id}`);if(p)p.classList.remove('open');},200);}
-function fillExName(id,name){document.getElementById(`en-${id}`).value=name;hideHist(id);}
+function fillExName(id,name,e){if(e)e.preventDefault();document.getElementById(`en-${id}`).value=name;hideHist(id);}
 
 function setMode(id,m){
   document.getElementById(`mu-${id}`).classList.toggle('on',m==='u');
   document.getElementById(`mp-${id}`).classList.toggle('on',m==='p');
   if(m==='u') renderUniform(id); else renderPerSet(id);
 }
-const RESTS=[60,90,120,180];
 function restChips(inputId){
   return `<div class="rest-chips">${RESTS.map(v=>`<button type="button" class="r-chip" onclick="setRest('${inputId}',${v},this)">${v}s</button>`).join('')}</div>`;
 }
@@ -908,8 +1034,25 @@ function collectExercises(){
 }
 
 function saveWk(){
-  const name=document.getElementById('wk-name').value.trim();
-  if(!name){document.getElementById('wk-name').focus();return;}
+  const nameEl=document.getElementById('wk-name');
+  const name=nameEl.value.trim();
+  if(!name){
+    nameEl.classList.add('invalid');
+    let errEl=document.getElementById('wk-name-err');
+    if(!errEl){
+      errEl=document.createElement('div');
+      errEl.id='wk-name-err';
+      errEl.className='field-error on';
+      errEl.textContent='Session name is required';
+      nameEl.parentNode.appendChild(errEl);
+    } else { errEl.classList.add('on'); }
+    nameEl.focus();
+    nameEl.addEventListener('input',()=>{
+      nameEl.classList.remove('invalid');
+      document.getElementById('wk-name-err')?.classList.remove('on');
+    },{once:true});
+    return;
+  }
   const date=document.getElementById('wk-date').value;
   const notes=document.getElementById('wk-notes').value.trim();
   const saveAsTmpl=document.getElementById('save-tmpl-toggle').classList.contains('on');
@@ -922,18 +1065,21 @@ function saveWk(){
     localStorage.setItem('bloc_tmpl',JSON.stringify(TEMPLATES));
   }
   closeSheet(); render(); toast('Session saved');
-  setTimeout(()=>{if(confirm('Start active workout session?')) launchWorkout(wk);},300);
+  // Show in-app prompt instead of setTimeout+confirm
+  showConfirm('Start Active Mode for this session?','Start Workout',()=>launchWorkout(wk),'Ready to train?');
 }
 
 // ══ ACTIVE WORKOUT ═════════════════════════════════════════════════
 function launchWorkout(wk){
+  // Guard: clear any existing timer before starting (prevents double-launch leak)
+  if(wmTimer){clearInterval(wmTimer);wmTimer=null;}
   wmDraft=JSON.parse(JSON.stringify(wk));
   document.getElementById('wm-title').textContent=wk.name.toUpperCase();
   document.getElementById('wm-elapsed').textContent='0:00';
   document.getElementById('rest-banner').classList.remove('on');
   buildWorkoutUI(wmDraft);
   document.getElementById('workout-mode').classList.add('on');
-  document.body.style.overflow='hidden';
+  lockScroll();
   wmStart=Date.now();
   wmTimer=setInterval(()=>{
     const s=Math.floor((Date.now()-wmStart)/1000);
@@ -948,7 +1094,7 @@ function buildWorkoutUI(wk){
   (wk.exercises||[]).forEach((ex,ei)=>{
     const sets=ex.mode==='per'?ex.sets||[]:Array.from({length:parseInt(ex.uSets)||0},()=>({reps:ex.uReps,weight:ex.uWeight,rest:ex.uRest}));
     const prevData=getPrevExData(ex.name,wk.id);
-    const orm=sets.length&&parseFloat(sets[0].weight)&&parseInt(sets[0].reps)?calc1RM(parseFloat(sets[0].weight),parseInt(sets[0].reps)):0;
+    const orm=sets.length?Math.max(0,...sets.map(s=>calc1RM(parseFloat(s.weight)||0,parseInt(s.reps)||0))):0;
     let setsHtml=sets.map((s,si)=>`
       <div class="wm-set-row" id="wmsr-${ei}-${si}">
         <div class="wm-set-n">${si+1}</div>
@@ -965,13 +1111,13 @@ function buildWorkoutUI(wk){
     const card=document.createElement('div');
     card.className='wm-ex-card';
     card.innerHTML=`
-      <div class="wm-ex-name">${ex.name}${orm?`<span class="wm-ex-1rm">~${orm} 1RM</span>`:''}</div>
-      ${ex.note?`<div class="wm-ex-note">${ex.note}</div>`:''}
+      <div class="wm-ex-name">${esc(ex.name)}${orm?`<span class="wm-ex-1rm">~${orm} 1RM</span>`:''}</div>
+      ${ex.note?`<div class="wm-ex-note">${esc(ex.note)}</div>`:''}
       <div style="display:grid;grid-template-columns:28px 1fr 1fr 1fr auto;gap:8px;padding:6px 14px 4px;border-bottom:1px solid var(--line)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center">#</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center">Reps</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center">Weight</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:center">Rest</span>
+        <span class="wm-col-hdr">#</span>
+        <span class="wm-col-hdr">Reps</span>
+        <span class="wm-col-hdr">Weight</span>
+        <span class="wm-col-hdr">Rest</span>
         <span></span>
       </div>
       ${setsHtml}
@@ -1023,27 +1169,32 @@ function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterv
 function skipRest(){stopRestTimer();}
 
 function finishWorkout(){
-  if(!confirm('Finish and save this workout?')) return;
-  clearInterval(wmTimer); wmTimer=null; stopRestTimer();
-  if(wmDraft){
-    // Save any in-session edits back
-    wmDraft.exercises.forEach((ex,ei)=>{
-      if(ex.mode==='per'){
-        (ex.sets||[]).forEach((s,si)=>{
-          s.reps=document.getElementById(`wmr-${ei}-${si}`)?.value||s.reps;
-          s.weight=document.getElementById(`wmw-${ei}-${si}`)?.value||s.weight;
-        });
-      } else {
-        ex.uReps=document.getElementById(`wmr-${ei}-0`)?.value||ex.uReps;
-        ex.uWeight=document.getElementById(`wmw-${ei}-0`)?.value||ex.uWeight;
-      }
-    });
-    const idx=WKS.findIndex(w=>w.id===wmDraft.id);
-    if(idx>=0){WKS[idx]=wmDraft;localStorage.setItem('bloc_wk',JSON.stringify(WKS));}
-  }
-  document.getElementById('workout-mode').classList.remove('on');
-  document.body.style.overflow='';
-  wmDraft=null; render(); toast('Workout complete 💪');
+  showConfirm('Finish and save this workout?','Finish',()=>{
+    clearInterval(wmTimer); wmTimer=null; stopRestTimer();
+    if(wmDraft){
+      wmDraft.exercises.forEach((ex,ei)=>{
+        if(ex.mode==='per'){
+          (ex.sets||[]).forEach((s,si)=>{
+            s.reps   = document.getElementById(`wmr-${ei}-${si}`)?.value   || s.reps;
+            s.weight = document.getElementById(`wmw-${ei}-${si}`)?.value   || s.weight;
+            s.rest   = document.getElementById(`wmrst-${ei}-${si}`)?.value || s.rest;
+          });
+        } else {
+          // Count actual rendered set rows in case user added/removed sets
+          const setRows = document.querySelectorAll(`[id^="wmsr-${ei}-"]`);
+          ex.uSets   = String(setRows.length || parseInt(ex.uSets) || 0);
+          ex.uReps   = document.getElementById(`wmr-${ei}-0`)?.value   || ex.uReps;
+          ex.uWeight = document.getElementById(`wmw-${ei}-0`)?.value   || ex.uWeight;
+          ex.uRest   = document.getElementById(`wmrst-${ei}-0`)?.value || ex.uRest;
+        }
+      });
+      const idx=WKS.findIndex(w=>w.id===wmDraft.id);
+      if(idx>=0){WKS[idx]=wmDraft;localStorage.setItem('bloc_wk',JSON.stringify(WKS));}
+    }
+    document.getElementById('workout-mode').classList.remove('on');
+    unlockScroll();
+    wmDraft=null; render(); toast('Workout complete 💪');
+  });
 }
 
 // ══ DETAIL ═════════════════════════════════════════════════════════
@@ -1057,10 +1208,23 @@ function showDetail(id){
   document.getElementById('d-date').textContent=(DAYS[d.getDay()]+' · '+MONTHSL[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()).toUpperCase();
   const totalSets=calcTotalSets(w.exercises||[]);
   const totalVol=calcVolume(w.exercises||[]);
+  // Show "Start Workout" button only for sessions logged today
+  const today=new Date().toISOString().split('T')[0];
+  const isToday=(w.date===today);
   document.getElementById('d-meta').innerHTML=`
     <div class="detail-stat"><div class="detail-stat-val">${(w.exercises||[]).length}</div><div class="detail-stat-lbl">Exercises</div></div>
     <div class="detail-stat"><div class="detail-stat-val">${totalSets}</div><div class="detail-stat-lbl">Total Sets</div></div>
     <div class="detail-stat"><div class="detail-stat-val">${fmtVol(totalVol)}</div><div class="detail-stat-lbl">Volume</div></div>`;
+  // Start Workout button for today's sessions
+  const startBtn=document.getElementById('detail-start-btn');
+  if(startBtn){
+    if(isToday){
+      startBtn.style.display='';
+      startBtn.onclick=()=>launchWorkout(w);
+    } else {
+      startBtn.style.display='none';
+    }
+  }
   let html=(w.exercises||[]).map(ex=>{
     let rows='',vol=0;
     if(ex.mode==='per'){
@@ -1069,17 +1233,19 @@ function showDetail(id){
       const n=parseInt(ex.uSets)||0,wt=parseFloat(ex.uWeight)||0,r=parseInt(ex.uReps)||0;vol=wt*r*n;
       for(let i=1;i<=n;i++) rows+=`<tr><td>${i}</td><td>${ex.uReps||'—'}</td><td>${wt?wt+' lbs':'BW'}</td><td>${i===1&&ex.uRest?ex.uRest+'s':''}</td></tr>`;
     }
-    const orm=ex.mode==='per'&&ex.sets?.length?calc1RM(parseFloat(ex.sets[0]?.weight)||0,parseInt(ex.sets[0]?.reps)||0):calc1RM(parseFloat(ex.uWeight)||0,parseInt(ex.uReps)||0);
+    const orm=ex.mode==='per'&&ex.sets?.length
+      ? Math.max(...(ex.sets).map(s=>calc1RM(parseFloat(s.weight)||0,parseInt(s.reps)||0)))
+      : calc1RM(parseFloat(ex.uWeight)||0,parseInt(ex.uReps)||0);
     return `<div class="detail-ex-card">
       <div class="detail-ex-hd">
-        <div class="detail-ex-name">${ex.name}${orm?` <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--t3);font-weight:300">~${orm} 1RM</span>`:''}</div>
+        <div class="detail-ex-name">${esc(ex.name)}${orm?` <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--t3);font-weight:300">~${orm} 1RM</span>`:''}</div>
         ${vol>0?`<div class="detail-ex-vol">${fmtVol(vol)}</div>`:''}
       </div>
-      ${ex.note?`<div class="detail-ex-note">${ex.note}</div>`:''}
+      ${ex.note?`<div class="detail-ex-note">${esc(ex.note)}</div>`:''}
       <table class="sets-tbl"><thead><tr><th>#</th><th>Reps</th><th>Weight</th><th>Rest</th></tr></thead><tbody>${rows}</tbody></table>
     </div>`;
   }).join('');
-  if(w.notes) html+=`<div class="detail-note">${w.notes}</div>`;
+  if(w.notes) html+=`<div class="detail-note">${esc(w.notes)}</div>`;
   document.getElementById('d-body').innerHTML=html;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));
@@ -1089,15 +1255,16 @@ function showDetail(id){
 
 function delWk(){
   if(!detId) return;
-  if(!confirm('Delete this session? This cannot be undone.')) return;
-  WKS=WKS.filter(w=>w.id!==detId);
-  localStorage.setItem('bloc_wk',JSON.stringify(WKS));
-  detId=null; render(); navTo('log'); toast('Session deleted');
+  showConfirm('This cannot be undone.','Delete Session',()=>{
+    WKS=WKS.filter(w=>w.id!==detId);
+    localStorage.setItem('bloc_wk',JSON.stringify(WKS));
+    detId=null; render(); navTo('log'); toast('Session deleted');
+  },'Delete this session?');
 }
 
 // ══ SETTINGS ═══════════════════════════════════════════════════════
-function openSettings(){document.getElementById('settings-overlay').classList.add('on');document.body.style.overflow='hidden';}
-function closeSettings(){document.getElementById('settings-overlay').classList.remove('on');document.body.style.overflow='';}
+function openSettings(){document.getElementById('settings-overlay').classList.add('on');lockScroll();}
+function closeSettings(){document.getElementById('settings-overlay').classList.remove('on');unlockScroll();}
 function settingsOvClick(e){if(e.target===document.getElementById('settings-overlay'))closeSettings();}
 
 function exportData(){
@@ -1119,33 +1286,63 @@ function importData(event){
   const file=event.target.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=e=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      if(!confirm(`This will replace all your current data. Are you sure?`)) return;
+    let data;
+    try{ data=JSON.parse(e.target.result); }
+    catch(err){ toast('Invalid backup file — could not parse JSON'); event.target.value=''; return; }
+    showConfirm('This will replace all your current data. Make sure you have a backup first.','Restore Data',()=>{
       if(data.bloc_wk){WKS=data.bloc_wk;localStorage.setItem('bloc_wk',JSON.stringify(WKS));}
       if(data.bloc_bw){BWS=data.bloc_bw;localStorage.setItem('bloc_bw',JSON.stringify(BWS));}
       if(data.bloc_tmpl){TEMPLATES=data.bloc_tmpl;localStorage.setItem('bloc_tmpl',JSON.stringify(TEMPLATES));}
       render(); closeSettings(); toast('Data restored successfully');
-    } catch(err){alert('Invalid backup file.');}
+    },'Import Backup?');
   };
   reader.readAsText(file);
   event.target.value='';
 }
 
 function confirmClearData(){
-  if(!confirm('Delete ALL data? This cannot be undone.')) return;
-  if(!confirm('Are you absolutely sure? Everything will be gone.')) return;
-  WKS=[]; BWS=[]; TEMPLATES=[];
-  localStorage.removeItem('bloc_wk');
-  localStorage.removeItem('bloc_bw');
-  localStorage.removeItem('bloc_tmpl');
-  render(); closeSettings(); toast('All data cleared');
+  showConfirm('This will permanently delete all sessions, body weight entries, and templates. There is no undo.','Delete Everything',()=>{
+    WKS=[]; BWS=[]; TEMPLATES=[];
+    localStorage.removeItem('bloc_wk');
+    localStorage.removeItem('bloc_bw');
+    localStorage.removeItem('bloc_tmpl');
+    render(); closeSettings(); toast('All data cleared');
+  },'Clear All Data?');
 }
 
 // ══ HELPERS ════════════════════════════════════════════════════════
 function calcTotalSets(exercises){return exercises.reduce((acc,e)=>acc+(e.mode==='per'?(e.sets||[]).length:(parseInt(e.uSets)||0)),0);}
 function calcVolume(exercises){return exercises.reduce((acc,e)=>{if(e.mode==='per')return acc+(e.sets||[]).reduce((a,s)=>a+(parseFloat(s.weight)||0)*(parseInt(s.reps)||0),0);return acc+(parseFloat(e.uWeight)||0)*(parseInt(e.uReps)||0)*(parseInt(e.uSets)||0);},0);}
 function fmtVol(v){if(!v)return '—';return v>=1000?(v/1000).toFixed(1)+'k lbs':v+' lbs';}
+
+// ── Custom confirm (replaces native confirm() throughout)
+let _confirmCb=null;
+function showConfirm(msg, okLabel, onOk, title){
+  document.getElementById('confirm-title').textContent=title||'Are you sure?';
+  document.getElementById('confirm-msg').textContent=msg;
+  document.getElementById('confirm-ok-btn').textContent=okLabel||'Confirm';
+  _confirmCb=onOk;
+  document.getElementById('confirm-overlay').classList.add('on');
+  lockScroll();
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.remove('on');
+  unlockScroll();
+  _confirmCb=null;
+}
+document.getElementById('confirm-ok-btn').addEventListener('click',()=>{
+  const cb=_confirmCb;
+  closeConfirm();
+  if(cb) cb();
+});
+document.getElementById('confirm-overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('confirm-overlay')) closeConfirm();
+});
+
+// ── Stop rest timer when app is hidden (prevents background battery drain)
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden) stopRestTimer();
+});
 
 let toastTimer=null;
 function toast(msg){
